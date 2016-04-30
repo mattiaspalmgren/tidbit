@@ -1,8 +1,9 @@
 module.exports = {
-  getTags: function(req, res) {    
+  getTags: function(req, res, callback) {    
         var pg = require('pg');  
       
         var conString = "postgres://mattiaspalmgren:@localhost/mattiaspalmgren";
+        var test = "fel";
 
         var client = new pg.Client(conString);
         client.connect(function(err) {
@@ -13,8 +14,12 @@ module.exports = {
             if(err) {
               return console.error('error running query', err);
             }
-            res.send(result);
+            // res.send(result);
+            // console.log(result);    
+          
             client.end();
+            callback(err, result);
+            // return result;
           });
         });
   }  

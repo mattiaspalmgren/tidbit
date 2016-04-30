@@ -1,7 +1,7 @@
 var express = require('express');
 var pg = require('pg');
 var app = express();
-var db = require("./scripts/db.js");
+var db = require("./modules/db.js");
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -11,12 +11,18 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-app.get('/', function(request, response) {
-  response.render('pages/index');
+app.get('/', function(req, res) {
+	res.render('pages/index');
 });
 
-app.get('/getTest', function(req, res) {
-	db.getTags(req, res);	
+app.get('/getTags', function(req, res) {
+	var tagline = "Any code of your own that you haven't looked at for six or more months might as well have been written by someone else.";
+	db.getTags(req, res, function(err, result) {
+		res.render('pages/tags', {
+			items: result.rows, 
+			tagline: tagline
+		});
+	});
 });
 
 app.listen(app.get('port'), function() {
