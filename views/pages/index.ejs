@@ -6,9 +6,16 @@
 
 <body>
 
-  <% include ../partials/nav.ejs %>
+	<% include ../partials/nav.ejs %>
 
-  hejsan, svejsan
+
+	<form action="" method="post" enctype="multipart/form-data">
+	 <fieldset>
+	    <input type="text" id="search" name="seach" placeholder="Astrid Lindgren..." />
+	    <br />
+	    <input type="submit" value="Search" />
+	 </fieldset>
+	</form>
 	
 </body>
 </html>

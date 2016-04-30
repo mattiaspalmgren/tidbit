@@ -16,7 +16,8 @@ app.get('/', function(request, response) {
 });
 
 app.get('/getTest', function(req, res) {
-	var conString = "postgres://mattiaspalmgren:@localhost/mattiaspalmgren";
+	//var conString = "postgres://mattiaspalmgren:@localhost/mattiaspalmgren";
+	var conString = "postgres://petraohlin8:@localhost/tidbit";
 
 	var client = new pg.Client(conString);
 	client.connect(function(err) {
