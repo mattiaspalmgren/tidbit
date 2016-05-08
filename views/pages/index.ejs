@@ -8,16 +8,9 @@
 <body>
 
 	<% include ../partials/nav.ejs %>
-
-	<h2>tidbit</h2>
-	<input type="button" onclick="location.href='/getTags';" value="Tags" />
+	<% include ../partials/search.ejs %>
 
 
-	<form action="http://localhost:5000/getSearch" method="post">
-	    <input type="text" name="search">
-	    <input type="submit">
-	</form>
-	
 
 
 </body>

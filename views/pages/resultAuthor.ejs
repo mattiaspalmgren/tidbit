@@ -7,13 +7,14 @@
 <body>
 
   <% include ../partials/nav.ejs %>
+  <% include ../partials/search.ejs %>
 
-  <h2>Result</h2>
-  <ul>
-      <% items.forEach(function(item) { %>
-          <li><%- item.author_legal_name, item.pseudonym, item.author_birthplace %></li>
-      <% }); %>
-  </ul>
+    <h2>Result</h2>
+    <ul>
+        <% items.forEach(function(item) { %>
+            <li><%- item.author_legal_name, item.pseudonym, item.author_birthplace %></li>
+        <% }); %>
+    </ul>
 
 </body>
 </html>
