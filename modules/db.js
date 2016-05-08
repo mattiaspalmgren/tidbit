@@ -6,7 +6,20 @@ module.exports = {
   },
 
   getSearch: function(req, res, callback) {    
-    var queryString = "SELECT * FROM authors WHERE author_name = '" + req.body.search + "'";
+
+    if(req.body.tables = "Authors"){
+      var attribute = "author_name";
+    }
+    else if(req.body.tables = "Titles"){
+      var attribute = "title";
+    }
+    else if(req.body.tables = "Publications"){
+      var attribute = "publication_title"
+    }
+
+
+    var queryString = "SELECT * FROM " + req.body.tables + " WHERE " + attribute + " = '" + req.body.search + "'";
+    console.log(queryString);
     queryDB(req, res, callback, queryString);
   }
 
