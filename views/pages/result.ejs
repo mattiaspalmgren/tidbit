@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+  <% include ../partials/nav.ejs %>
+
+  <h2>Result</h2>
+  <ul>
+      <% items.forEach(function(item) { %>
+          <li><%- item.tag_id %></li>
+      <% }); %>
+  </ul>
+
+</body>
+</html>
