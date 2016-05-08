@@ -2,7 +2,7 @@ var express = require('express');
 var pg = require('pg');
 var app = express();
 var bodyParser = require('body-parser');
-var db = require("./modules/db.js");
+var db= require("./modules/db.js");
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -18,13 +18,16 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 app.get('/', function(req, res) {
-	res.render('pages/index');
+	res.render('pages/index', {
+		items: []
+	});
+	
 });
 
 app.get('/getTags', function(req, res) {
 	db.getTags(req, res, function(err, result) {
 
-		res.render('pages/result', {
+		res.render('pages/index', {
 			items: result.rows
 		});
 	});
@@ -34,7 +37,7 @@ app.get('/getTags', function(req, res) {
 app.post('/getSearch', function(req, res) {
 	db.getSearch(req, res, function(err, result) {
 
-	res.render('pages/resultAuthor', {
+	res.render('pages/index', {
 			items: result.rows
 		});
 	});

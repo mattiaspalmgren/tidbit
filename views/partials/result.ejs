@@ -1,0 +1,19 @@
+<table class="table table-striped">
+  	<thead>
+      <tr>
+    	<% var keys = Object.keys(items[0]); %>
+    	<% for(var i = 0; i < keys.length; i++) { %>
+            <th><%- keys[i] %></th>
+        <% }; %>
+      </tr>
+    </thead>
+    <tbody>
+    	<% items.forEach(function(item) { %>
+    	    <tr>
+    	    	<% keys.forEach(function(key) { %>
+    	    		<td><%- item[key] %></td>
+    	    	<% }); %> 
+    	    </tr>
+    	<% }); %>
+	</tbody>
+</table>

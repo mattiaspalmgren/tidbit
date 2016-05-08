@@ -9,9 +9,11 @@
 
 	<% include ../partials/nav.ejs %>
 	<% include ../partials/search.ejs %>
-
-
-
+  	
+  	<% if(items.length > 0) { %>
+  		<% include ../partials/result.ejs %>
+  	<% } %>
+  	
 
 </body>
 

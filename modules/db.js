@@ -18,8 +18,7 @@ module.exports = {
     }
 
 
-    var queryString = "SELECT * FROM " + req.body.tables + " WHERE " + attribute + " = '" + req.body.search + "'";
-    console.log(queryString);
+    var queryString = "SELECT * FROM " + req.body.tables + " WHERE " + attribute + " LIKE '%" + req.body.search + "%'";
     queryDB(req, res, callback, queryString);
   }
 
@@ -29,7 +28,7 @@ var queryDB = function(req, res, callback, queryString) {
       var pg = require('pg');  
     
       //var conString = "postgres://mattiaspalmgren:@localhost/mattiaspalmgren";
-      var conString = "postgres://petraohlin8:@localhost/tidbit";
+       var conString = "postgres://petraohlin8:@localhost/tidbit";
       
       var client = new pg.Client(conString);
       client.connect(function(err) {
@@ -40,9 +39,7 @@ var queryDB = function(req, res, callback, queryString) {
           if(err) {
             return console.error('error running query', err);
           }
-
-          // res.send(result);
-          // client.end();
+          
           client.end();
           callback(err, result);
         });
