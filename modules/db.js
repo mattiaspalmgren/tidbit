@@ -7,18 +7,22 @@ module.exports = {
 
   getSearch: function(req, res, callback) {    
 
-    if(req.body.tables = "Authors"){
-      var attribute = "author_name";
+    console.log(req.body.tables);
+
+    var attribute = "";
+    if(req.body.tables == "Authors"){
+      attribute = "author_name";
     }
-    else if(req.body.tables = "Titles"){
-      var attribute = "title";
+    else if(req.body.tables == "Titles"){
+      attribute = "title";
     }
-    else if(req.body.tables = "Publications"){
-      var attribute = "publication_title"
+    else if(req.body.tables == "Publications"){
+      attribute = "publication_title"
     }
 
 
     var queryString = "SELECT * FROM " + req.body.tables + " WHERE " + attribute + " LIKE '%" + req.body.search + "%'";
+    console.log(queryString);
     queryDB(req, res, callback, queryString);
   }
 
