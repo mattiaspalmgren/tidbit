@@ -1,32 +1,30 @@
 module.exports = {
+
   getTags: function(req, res, callback) {    
-    var queryString = 'SELECT tag_id FROM tags LIMIT 10';
+    var queryString = 'SELECT tag_id FROM tags LIMIT 10;';
     queryDB(req, res, callback, queryString);
 
   },
 
-  getSearch: function(req, res, callback) {    
+  getAttributes: function(req, res, callback) {    
+    var queryString = "SELECT column_name FROM information_schema.columns WHERE table_name = '" + req.body.tables + "' ORDER BY ordinal_position;";
+    queryDB(req, res, callback, queryString);
+  },
 
-    console.log(req.body.tables);
+  getTables: function(req, res, callback) {    
+    var queryString = "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE';"
+    queryDB(req, res, callback, queryString);
+  },
 
-    var attribute = "";
-    if(req.body.tables == "Authors"){
-      attribute = "author_name";
-    }
-    else if(req.body.tables == "Titles"){
-      attribute = "title";
-    }
-    else if(req.body.tables == "Publications"){
-      attribute = "publication_title"
-    }
+  getSearch: function(req, res, currentTable, callback) {    
+    queryString = "SELECT * FROM " + currentTable + " WHERE " + req.body.attributes + " LIKE '%" + req.body.search + "%';";
 
-
-    var queryString = "SELECT * FROM " + req.body.tables + " WHERE " + attribute + " LIKE '%" + req.body.search + "%'";
     console.log(queryString);
     queryDB(req, res, callback, queryString);
   }
 
 };
+
 
 var queryDB = function(req, res, callback, queryString) {    
       var pg = require('pg');  

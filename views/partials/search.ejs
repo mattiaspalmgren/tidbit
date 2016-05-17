@@ -4,14 +4,33 @@
 	<input type="button" onclick="location.href='/getTags';" value="Tags" />
 
 
-	<form action="http://localhost:5000/getSearch" method="post">
-		<input list="tables" name="tables">
-		  <datalist id="tables">
-		    <option value="Authors">
-		    <option value="Titles">
-		    <option value="Publications">
-		  </datalist>
-	    <input type="text" name="search">
-	    <input type="submit">
-	</form>
+		<form action="http://localhost:5000/getAttributes" method="post">
+			  <select id="tables" name="tables">
+			  	<option value="" disabled selected>Select an entity</option>
+
+		    	<% for(var i = 0; i < dropdownTables.length; i++) { %>
+		            <option value=<%- dropdownTables[i] %>><%- dropdownTables[i] %></option>
+		        <% }; %>
+
+			  </select>
+		    <input type="submit">
+		</form>
+
+
+	<% if(dropdownAttributes.length > 0) { %>
+	  	<form action="http://localhost:5000/getSearch" method="post">
+			<input type="text" name="tables" value=<%- currentTable %> readonly>
+
+			  <select id="attributes" name="attributes">
+			  		<option value="" disabled selected>Select an attribute</option>
+			    	<% for(var i = 0; i < dropdownAttributes.length; i++) { %>
+			            <option value=<%- dropdownAttributes[i] %>><%- dropdownAttributes[i] %></option>
+			        <% }; %>
+		      
+			  </select>
+			<input type="text" name="search" placeholder="Search key">
+		    <input type="submit">
+		</form>
+ 	<% } %>
+
 <div>
