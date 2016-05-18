@@ -16,9 +16,10 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+// support json encoded bodies
+app.use(bodyParser.json()); 
+// support encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); 
 
 app.get('/', function(req, res) {
 

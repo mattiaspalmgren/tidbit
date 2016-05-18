@@ -7,17 +7,20 @@
 
 <body>
 
-	<!--<% include ../partials/nav.ejs %>-->
+  <div class="container">
 
-	<% if(dropdownTables.length > 0) { %>
-  		<% include ../partials/search.ejs %>
-  	<% } %>
+  	 <% if(dropdownTables.length > 0) { %>
+    		<% include ../partials/nav.ejs %>
+    	<% } %>
 
-  	
-  	<% if(items.length > 0) { %>
-  		<% include ../partials/result.ejs %>
-  	<% } %>
-  	
+      <% if(dropdownTables.length > 0) { %>
+          <% include ../partials/queries.ejs %>
+      <% } %>
+
+    	<% if(items.length > 0) { %>
+    		<% include ../partials/result.ejs %>
+    	<% } %>
+  </div>
 
 </body>
 

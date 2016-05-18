@@ -1,63 +1,54 @@
-  	
-<div class="container">
 
-	<div class="page-header">
-	  <h1>tidbit <small>an application for searching a book database <span class="glyphicon glyphicon-education" aria-hidden="true"></span></small></h1>
-	</div>
+<div id="home" class="tab-pane fade in active">
+	<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+	<form action="http://localhost:5000/getAttributes" method="post" class="form-inline">
+		<div class="form-group">
 
-	<div class="jumbotron">
-		<div class="container">
+		  <select id="tables" name="tables" class="form-control">
+		  	<option value="" disabled selected>Select an entity</option>
 
-	  		<p>Search</p>
+	  		<% for(var i = 0; i < dropdownTables.length; i++) { %>
+	         	 <option value=<%- dropdownTables[i] %>><% dropdownTables[i] %>></option>
+	      	<% }; %>
 
-			<form action="http://localhost:5000/getAttributes" method="post" class="form-inline">
-				<div class="form-group">
+		  </select>
+	    	<input class="btn btn-default" type="submit">
+	    </div>	
+	</form>
 
-				  <select id="tables" name="tables" class="form-control">
-				  	<option value="" disabled selected>Select an entity</option>
+	<div>
+	<% if(dropdownAttributes.length > 0) { %>
+	  	<form action="http://localhost:5000/getSearch" method="post" class="form-inline">
 
-			    	<% for(var i = 0; i < dropdownTables.length; i++) { %>
-			            <option value=<%- dropdownTables[i] %>><%- dropdownTables[i] %></option>
+			<input type="text" name="tables" class="form-control" value=<%- currentTable %> readonly>
+
+			  <select id="attributes" name="attributes" class="form-control">
+			  		<option value="" disabled selected>Select an attribute</option>
+			    	<% for(var i = 0; i < dropdownAttributes.length; i++) { %>
+			            <option value=<%- dropdownAttributes[i] %>><%- dropdownAttributes[i] %></option>
 			        <% }; %>
+		      
+			  </select>
 
-				  </select>
-			      <input class="btn btn-default" type="submit">
-			    </div>
-			</form>
+			<div class="input-group">
+			  <span class="input-group-addon" id="basic-addon1">
+				<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+			  </span>
+			  <input type="text" name="search" class="form-control" placeholder="Search key" aria-describedby="basic-addon1">
+			</div>
 
-
-		<% if(dropdownAttributes.length > 0) { %>
-		  	<form action="http://localhost:5000/getSearch" method="post" class="form-inline">
-
-				<input type="text" name="tables" class="form-control" value=<%- currentTable %> readonly>
-
-				  <select id="attributes" name="attributes" class="form-control">
-				  		<option value="" disabled selected>Select an attribute</option>
-				    	<% for(var i = 0; i < dropdownAttributes.length; i++) { %>
-				            <option value=<%- dropdownAttributes[i] %>><%- dropdownAttributes[i] %></option>
-				        <% }; %>
-			      
-				  </select>
-
-				<div class="input-group">
-				  <span class="input-group-addon" id="basic-addon1">
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-				  </span>
-				  <input type="text" name="search" class="form-control" placeholder="Search key" aria-describedby="basic-addon1">
-				</div>
-
-			    <input class="btn btn-primary" type="submit">
-			</form>
-	 	<% } %>
-		</div>
+		    <input class="btn btn-primary" type="submit">
+		</form>
+		<% } %>
 	</div>
-
-	<div class="jumbotron">
-	 	<div class="container">
-	 		<p>Queries</p>
-	 		<input type="button" class="btn btn-default" onclick="location.href='/getTags';" value="Tags" />
-
-		</div>
-	</div>
-
 </div>
+
+
+
+		
+
+
+	
+
+	
+
