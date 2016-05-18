@@ -4,14 +4,14 @@
 	<form action="http://localhost:5000/getAttributes" method="post" class="form-inline">
 		<div class="form-group">
 
-		  <select id="tables" name="tables" class="form-control">
-		  	<option value="" disabled selected>Select an entity</option>
+			<select id="tables" name="tables" class="form-control">
+				<option value="" disabled selected>Select an entity</option>
 
-	  		<% for(var i = 0; i < dropdownTables.length; i++) { %>
-	         	 <option value=<%- dropdownTables[i] %>><% dropdownTables[i] %>></option>
-	      	<% }; %>
+				<% for(var i = 0; i < dropdownTables.length; i++) { %>
+				<option value=<%- dropdownTables[i] %>><%- dropdownTables[i] %></option>
+				<% }; %>
 
-		  </select>
+			</select>
 	    	<input class="btn btn-default" type="submit">
 	    </div>	
 	</form>

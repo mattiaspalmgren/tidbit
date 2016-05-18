@@ -74,7 +74,6 @@ app.post('/getAttributes', function(req, res) {
 app.post('/getSearch', function(req, res) {
 	db.getSearch(req, res, currentTable, function(err, result) {
 
-		console.log(result.rows);
 		res.render('pages/index', {
 			dropdownTables: dropdownTables,
 			dropdownAttributes: dropdownAttributes,
