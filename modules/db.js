@@ -18,7 +18,10 @@ module.exports = {
 
   getSearch: function(req, res, currentTable, callback) {    
     var queryString = "";
-    if(!isNaN(Date.parse(req.body.search)) && req.body.attributes.indexOf("date") > -1)
+    console.log(req.body.search);
+    if(req.body.search == "")
+      queryString = "SELECT * FROM " + currentTable
+    else if(!isNaN(Date.parse(req.body.search)) && req.body.attributes.indexOf("date") > -1)
       queryString = "SELECT * FROM " + currentTable + " WHERE " + req.body.attributes  + "::text LIKE '%" + req.body.search + "%';";
     else if(isNaN(req.body.search))
       queryString = "SELECT * FROM " + currentTable + " WHERE " + req.body.attributes + " LIKE '%" + req.body.search + "%';";
@@ -34,8 +37,8 @@ module.exports = {
 var queryDB = function(req, res, callback, queryString) {    
       var pg = require('pg');  
     
-      var conString = "postgres://mattiaspalmgren:@localhost/mattiaspalmgren";
-       // var conString = "postgres://petraohlin8:@localhost/tidbit";
+      //var conString = "postgres://mattiaspalmgren:@localhost/mattiaspalmgren";
+       var conString = "postgres://petraohlin8:@localhost/tidbit";
       
       var client = new pg.Client(conString);
       client.connect(function(err) {
