@@ -18,12 +18,14 @@ module.exports = {
 
   getSearch: function(req, res, currentTable, callback) {    
     var queryString = "";
-    if(isNaN(req.body.search))
+    if(!isNaN(Date.parse(req.body.search)))
+      queryString = "SELECT * FROM " + currentTable + " WHERE " + req.body.attributes  + "::text LIKE '%" + req.body.search + "%';";
+    else if(isNaN(req.body.search))
       queryString = "SELECT * FROM " + currentTable + " WHERE " + req.body.attributes + " LIKE '%" + req.body.search + "%';";
     else
        queryString = "SELECT * FROM " + currentTable + " WHERE " + req.body.attributes + " = " + req.body.search + ";";
 
-    console.log(queryString);
+    //console.log(queryString);
     queryDB(req, res, callback, queryString);
   }
 
