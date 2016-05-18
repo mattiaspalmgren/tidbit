@@ -17,7 +17,11 @@ module.exports = {
   },
 
   getSearch: function(req, res, currentTable, callback) {    
-    queryString = "SELECT * FROM " + currentTable + " WHERE " + req.body.attributes + " LIKE '%" + req.body.search + "%';";
+    var queryString = "";
+    if(isNaN(req.body.search))
+      queryString = "SELECT * FROM " + currentTable + " WHERE " + req.body.attributes + " LIKE '%" + req.body.search + "%';";
+    else
+       queryString = "SELECT * FROM " + currentTable + " WHERE " + req.body.attributes + " = " + req.body.search + ";";
 
     console.log(queryString);
     queryDB(req, res, callback, queryString);
