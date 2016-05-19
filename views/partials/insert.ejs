@@ -5,11 +5,11 @@
 	<form action="http://localhost:5000/getAttributes" method="post" class="form-inline">
 		<div class="form-group">
 
-			<select id="tables" name="tables" class="form-control">
+			<select id="tables" name="tables" class="form-control" required>
 				<option value="" disabled selected>Select an entity</option>
 
-				<% for(var i = 0; i < dropdownTables.length; i++) { %>
-				<option value=<%- dropdownTables[i] %>><%- dropdownTables[i] %></option>
+				<% for(var i = 0; i < dropdownTablesInsert.length; i++) { %>
+				<option value=<%- dropdownTablesInsert[i] %>><%- dropdownTablesInsert[i] %></option>
 				<% }; %>
 
 			</select>
@@ -17,10 +17,10 @@
 	    </div>	
 	</form>
 
-	<% if(dropdownAttributes.length > 0) { %>
+	<% if(dropdownAttributesInsert.length > 0) { %>
 	  	<form action="http://localhost:5000/insert" method="post" class="form-inline">
 
-			<input type="text" name="tables" class="form-control" value=<%- currentTable %> readonly>
+			<input type="text" name="tables" class="form-control" value=<%- currentTableInsert %> readonly>
 
 			<div class="input-group">
 			  <span class="input-group-addon" id="basic-addon1">

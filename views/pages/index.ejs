@@ -15,22 +15,25 @@
 
     <div>
 
-     <% if(dropdownTables.length > 0) { %>
-    		<% include ../partials/search.ejs %>
-    	<% } %>
+		<% if(dropdownTablesSearch.length > 0) { %>
+			<% include ../partials/search.ejs %>
+		<% } %>
 
-     <% if(dropdownTables.length > 0) { %>
-        <% include ../partials/insert.ejs %>
-      <% } %>
+		<% if(dropdownTablesInsert.length > 0) { %>
+			<% include ../partials/insert.ejs %>
+		<% } %>
 
-      <% if(dropdownTables.length > 0) { %>
-          <% include ../partials/queries.ejs %>
-      <% } %>
+		<% if(dropdownTablesDelete.length > 0) { %>
+			<% include ../partials/delete.ejs %>
+		<% } %>
 
-    	<% if(items.length > 0) { %>
-    		<% include ../partials/result.ejs %>
-    	<% } %>
-  </div>
+		<% include ../partials/queries.ejs %>
+
+
+		<% if(items.length > 0) { %>
+			<% include ../partials/result.ejs %>
+		<% } %>
+    </div>
 
 </body>
 

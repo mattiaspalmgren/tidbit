@@ -1,0 +1,58 @@
+<div class="jumbotron">
+	<p>Delete something from the data base.</p>
+	<form action="http://localhost:5000/getAttributesDelete" method="post" class="form-inline">
+		<div class="form-group">
+
+			<select id="tables" name="tables" class="form-control" required>
+				<option value="" disabled selected>Select an entity</option>
+
+				<% for(var i = 0; i < dropdownTablesDelete.length; i++) { %>
+				<option value=<%- dropdownTablesDelete[i] %>><%- dropdownTablesDelete[i] %></option>
+				<% }; %>
+
+			</select>
+	    	<input class="btn btn-default" type="submit">
+	    </div>	
+	</form>
+
+	<% if(dropdownAttributesDelete.length > 0) { %>
+	  	<form action="http://localhost:5000/postDelete" method="post" class="form-inline">
+
+			<input type="text" name="tables" class="form-control" value=<%- currentTableDelete %> readonly>
+
+			  <select id="attributes" name="attributes" class="form-control" required>
+			  		<option value="" disabled selected>Select an attribute</option>
+			    	<% for(var i = 0; i < dropdownAttributesDelete.length; i++) { %>
+			            <option value=<%- dropdownAttributesDelete[i] %>><%- dropdownAttributesDelete[i] %></option>
+			        <% }; %>
+		      
+			  </select>
+
+			<div class="input-group">
+			  <span class="input-group-addon" id="basic-addon1">
+				<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+			  </span>
+			  <input type="text" name="search" class="form-control" placeholder="Search key" aria-describedby="basic-addon1" >
+			</div>
+
+		    <input class="btn btn-primary" type="submit">
+		</form>
+		<% } %>
+
+		<% if(deleteSuccess != -1) { 
+			 if(deleteSuccess > 0) { %>
+			 <div class="alert alert-success">
+			  <strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Success!</strong> You deleted an entry in the database. 
+			</div>
+			<% } 
+			 else { %>
+			 <div class="alert alert-danger">
+			  <strong><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Error!</strong> You were not able to delete, try again, it was maybe a typo. 
+			</div>
+			<% } 
+		 } %>
+
+</div>
+
+
+		

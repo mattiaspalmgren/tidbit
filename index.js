@@ -3,10 +3,15 @@ var pg = require('pg');
 var app = express();
 var bodyParser = require('body-parser');
 var db= require("./modules/db.js");
-var dropdownTables = [];
-var dropdownAttributes = [];
-var currentTable = "";
-
+var dropdownTablesSearch = [];
+var dropdownTablesDelete = [];
+var dropdownTablesInsert = [];
+var dropdownAttributesSearch = [];
+var dropdownAttributesInsert = [];
+var dropdownAttributesDelete = [];
+var currentTableSearch = "";
+var currentTableInsert = "";
+var currentTableDelete = "";
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -25,16 +30,27 @@ app.get('/', function(req, res) {
 
 	db.getTables(req, res, function(err, result) {
 
-		dropdownTables = [];
+		dropdownTablesSearch = [];
+		dropdownTablesInsert = [];
+		dropdownTablesDelete = [];
 		for(var i = 0; i < result.rows.length; i++){
-			dropdownTables.push(result.rows[i].table_name);
+			dropdownTablesSearch.push(result.rows[i].table_name);
+			dropdownTablesInsert.push(result.rows[i].table_name);
+			dropdownTablesDelete.push(result.rows[i].table_name);
 		}
 
 		res.render('pages/index', {
-			dropdownTables: dropdownTables,
-			dropdownAttributes: dropdownAttributes,
-			currentTable: currentTable,
-			items: []
+			dropdownTablesSearch: dropdownTablesSearch,
+			dropdownTablesInsert: dropdownTablesInsert,
+			dropdownTablesDelete: dropdownTablesDelete,
+			dropdownAttributesSearch: dropdownAttributesSearch,
+			dropdownAttributesInsert: dropdownAttributesInsert,
+			dropdownAttributesDelete: dropdownAttributesDelete,
+			currentTableSearch: currentTableSearch,
+			currentTableInsert: currentTableInsert,
+			currentTableDelete: currentTableDelete,
+			items: [],
+			deleteSuccess: -1
 		});
 	});
 });
@@ -43,47 +59,115 @@ app.get('/getTags', function(req, res) {
 	db.getTags(req, res, function(err, result) {
 
 		res.render('pages/index', {
-			dropdownTables: dropdownTables,
-			dropdownAttributes: dropdownAttributes,
-			currentTable: currentTable,
-			items: result.rows
+			dropdownTablesSearch: dropdownTablesSearch,
+			dropdownTablesInsert: dropdownTablesInsert,
+			dropdownTablesDelete: dropdownTablesDelete,
+			dropdownAttributesSearch: dropdownAttributesSearch,
+			dropdownAttributesInsert: dropdownAttributesInsert,
+			dropdownAttributesDelete: dropdownAttributesDelete,
+			currentTableSearch: currentTableSearch,
+			currentTableInsert: currentTableInsert,
+			currentTableDelete: currentTableDelete,
+			items: result.rows,
+			deleteSuccess: -1
 		});
 	});
 	
 });
 
-app.post('/getAttributes', function(req, res) {
+app.post('/getAttributesSearch', function(req, res) {
 	db.getAttributes(req, res, function(err, result) {
 
-	currentTable = req.body.tables;
+	currentTableSearch = req.body.tables;
 
 	dropdownAttributes = [];
 	for(var i = 0; i < result.rows.length; i++){
-		dropdownAttributes.push(result.rows[i].column_name);
+		dropdownAttributesSearch.push(result.rows[i].column_name);
 	}
 
 	res.render('pages/index', {
-			dropdownTables: dropdownTables,
-			dropdownAttributes: dropdownAttributes,
-			currentTable: currentTable,
-			items: []
+			dropdownTablesSearch: dropdownTablesSearch,
+			dropdownTablesInsert: dropdownTablesInsert,
+			dropdownTablesDelete: dropdownTablesDelete,
+			dropdownAttributesSearch: dropdownAttributesSearch,
+			dropdownAttributesInsert: dropdownAttributesInsert,
+			dropdownAttributesDelete: dropdownAttributesDelete,
+			currentTableSearch: currentTableSearch,
+			currentTableInsert: currentTableInsert,
+			currentTableDelete: currentTableDelete,
+			items: [],
+			deleteSuccess: -1
+		});
+	});
+});
+
+
+app.post('/getAttributesDelete', function(req, res) {
+	db.getAttributes(req, res, function(err, result) {
+
+	currentTableDelete = req.body.tables;
+
+	dropdownAttributes = [];
+	for(var i = 0; i < result.rows.length; i++){
+		dropdownAttributesDelete.push(result.rows[i].column_name);
+	}
+
+	res.render('pages/index', {
+			dropdownTablesSearch: dropdownTablesSearch,
+			dropdownTablesInsert: dropdownTablesInsert,
+			dropdownTablesDelete: dropdownTablesDelete,
+			dropdownAttributesSearch: dropdownAttributesSearch,
+			dropdownAttributesInsert: dropdownAttributesInsert,
+			dropdownAttributesDelete: dropdownAttributesDelete,
+			currentTableSearch: currentTableSearch,
+			currentTableInsert: currentTableInsert,
+			currentTableDelete: currentTableDelete,
+			items: [],
+			deleteSuccess: -1
 		});
 	});
 });
 
 app.post('/getSearch', function(req, res) {
-	db.getSearch(req, res, currentTable, function(err, result) {
+	db.getSearch(req, res, currentTableSearch, function(err, result) {
 
 		res.render('pages/index', {
-			dropdownTables: dropdownTables,
-			dropdownAttributes: dropdownAttributes,
-			currentTable: currentTable,
-			items: result.rows
+			dropdownTablesSearch: dropdownTablesSearch,
+			dropdownTablesInsert: dropdownTablesInsert,
+			dropdownTablesDelete: dropdownTablesDelete,
+			dropdownAttributesSearch: dropdownAttributesSearch,
+			dropdownAttributesInsert: dropdownAttributesInsert,
+			dropdownAttributesDelete: dropdownAttributesDelete,
+			currentTableSearch: currentTableSearch,
+			currentTableInsert: currentTableInsert,
+			currentTableDelete: currentTableDelete,
+			items: result.rows,
+			deleteSuccess: -1
 		});
 	});
 	
 });
 
+app.post('/postDelete', function(req, res) {
+	db.postDelete(req, res, currentTableDelete, function(err, result) {
+
+		res.render('pages/index', {
+			dropdownTablesSearch: dropdownTablesSearch,
+			dropdownTablesInsert: dropdownTablesInsert,
+			dropdownTablesDelete: dropdownTablesDelete,
+			dropdownAttributesSearch: dropdownAttributesSearch,
+			dropdownAttributesInsert: dropdownAttributesInsert,
+			dropdownAttributesDelete: dropdownAttributesDelete,
+			currentTableSearch: currentTableSearch,
+			currentTableInsert: currentTableInsert,
+			currentTableDelete: currentTableDelete,
+			items: [],
+			deleteSuccess: result.rowCount
+		});
+
+	});
+	
+});
 
 
 app.listen(app.get('port'), function() {
