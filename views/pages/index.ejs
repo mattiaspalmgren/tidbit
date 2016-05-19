@@ -8,10 +8,20 @@
 <body>
 
   <div class="container">
+    
+    <div class="page-header">
+      <h1>tidbit <small>an application for searching a book database <span class="glyphicon glyphicon-education" aria-hidden="true"></span></small></h1>
+    </div>
 
-  	 <% if(dropdownTables.length > 0) { %>
-    		<% include ../partials/nav.ejs %>
+    <div>
+
+     <% if(dropdownTables.length > 0) { %>
+    		<% include ../partials/search.ejs %>
     	<% } %>
+
+     <% if(dropdownTables.length > 0) { %>
+        <% include ../partials/insert.ejs %>
+      <% } %>
 
       <% if(dropdownTables.length > 0) { %>
           <% include ../partials/queries.ejs %>
