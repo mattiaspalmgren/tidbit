@@ -58,19 +58,16 @@ app.get('/', function(req, res) {
 app.get('/getTags', function(req, res) {
 	db.getTags(req, res, function(err, result) {
 
-		res.render('pages/index', {
-			dropdownTablesSearch: dropdownTablesSearch,
-			dropdownTablesInsert: dropdownTablesInsert,
-			dropdownTablesDelete: dropdownTablesDelete,
-			dropdownAttributesSearch: dropdownAttributesSearch,
-			dropdownAttributesInsert: dropdownAttributesInsert,
-			dropdownAttributesDelete: dropdownAttributesDelete,
-			currentTableSearch: currentTableSearch,
-			currentTableInsert: currentTableInsert,
-			currentTableDelete: currentTableDelete,
-			items: result.rows,
-			deleteSuccess: -1
+		res.render('pages/querypage', {
+			items: result.rows
 		});
+	});
+	
+});
+
+app.get('/getQueries', function(req, res) {
+	res.render('pages/querypage', {
+		items: []
 	});
 	
 });

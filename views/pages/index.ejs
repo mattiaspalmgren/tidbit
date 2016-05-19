@@ -8,12 +8,18 @@
 <body>
 
   <div class="container">
-    
+
     <div class="page-header">
-      <h1>tidbit <small>an application for searching a book database <span class="glyphicon glyphicon-education" aria-hidden="true"></span></small></h1>
+      <h1>tidbit <small>an application for searching a book database <span class="glyphicon glyphicon-education" aria-hidden="true"></span></small>
+
+      	<button type="button" class="btn btn-default" onclick="location.href='/getQueries';" >
+	      	Queries
+	    </button>
+      </h1>
     </div>
 
-    <div>
+
+
 
 		<% if(dropdownTablesSearch.length > 0) { %>
 			<% include ../partials/search.ejs %>
@@ -26,9 +32,6 @@
 		<% if(dropdownTablesDelete.length > 0) { %>
 			<% include ../partials/delete.ejs %>
 		<% } %>
-
-		<% include ../partials/queries.ejs %>
-
 
 		<% if(items.length > 0) { %>
 			<% include ../partials/result.ejs %>

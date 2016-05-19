@@ -1,5 +1,5 @@
 <div class="jumbotron">
-	<p>Delete something from the data base.</p>
+	<p>Delete something from the database.</p>
 	<form action="http://localhost:5000/getAttributesDelete" method="post" class="form-inline">
 		<div class="form-group">
 
@@ -11,10 +11,9 @@
 				<% }; %>
 
 			</select>
-	    	<input class="btn btn-default" type="submit">
+	    	<input class="btn btn-default" type="submit" value="Select">
 	    </div>	
 	</form>
-
 	<% if(dropdownAttributesDelete.length > 0) { %>
 	  	<form action="http://localhost:5000/postDelete" method="post" class="form-inline">
 
@@ -35,23 +34,21 @@
 			  <input type="text" name="search" class="form-control" placeholder="Search key" aria-describedby="basic-addon1" >
 			</div>
 
-		    <input class="btn btn-primary" type="submit">
+		    <input class="btn btn-danger" type="submit" value="Delete">
 		</form>
-		<% } %>
-
-		<% if(deleteSuccess != -1) { 
-			 if(deleteSuccess > 0) { %>
-			 <div class="alert alert-success">
-			  <strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Success!</strong> You deleted an entry in the database. 
-			</div>
-			<% } 
-			 else { %>
-			 <div class="alert alert-danger">
-			  <strong><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Error!</strong> You were not able to delete, try again, it was maybe a typo. 
-			</div>
-			<% } 
-		 } %>
-
+	<% } %>
+	<% if(deleteSuccess != -1) { 
+		 if(deleteSuccess > 0) { %>
+		 <div class="alert alert-success">
+		  <strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Success!</strong> You deleted an entry in the database. 
+		</div>
+		<% } 
+		 else { %>
+		 <div class="alert alert-danger">
+		  <strong><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Error!</strong> You were not able to delete, try again, it was maybe a typo. 
+		</div>
+		<% } 
+	} %>
 </div>
 
 
