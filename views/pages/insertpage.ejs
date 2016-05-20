@@ -17,10 +17,10 @@
 		   	<button type="button" class="btn btn-default" onclick="location.href='/';" >
 		      	Search
 		    </button>
-	        <button type="button" class="btn btn-default active" onclick="location.href='/queryPage';" >
+	        <button type="button" class="btn btn-default" onclick="location.href='/queryPage';" >
 		      	Queries
 		    </button>
-		    <button type="button" class="btn btn-default" onclick="location.href='/insertPage';" >
+		    <button type="button" class="btn btn-default active" onclick="location.href='/insertPage';" >
 		      	Insert
 		    </button>
 		     <button type="button" class="btn btn-default" onclick="location.href='/deletePage';" >
@@ -32,13 +32,8 @@
 
     </div>
 
-    <div>
-		<% include ../partials/queries.ejs %>
 
-
-		<% if(items.length > 0) { %>
-			<% include ../partials/result.ejs %>
-		<% } %>
+		<% include ../partials/insert.ejs %>
     </div>
 
 </body>

@@ -31,26 +31,46 @@ app.get('/', function(req, res) {
 	db.getTables(req, res, function(err, result) {
 
 		dropdownTablesSearch = [];
-		dropdownTablesInsert = [];
-		dropdownTablesDelete = [];
 		for(var i = 0; i < result.rows.length; i++){
 			dropdownTablesSearch.push(result.rows[i].table_name);
-			dropdownTablesInsert.push(result.rows[i].table_name);
-			dropdownTablesDelete.push(result.rows[i].table_name);
 		}
 
 		res.render('pages/index', {
 			dropdownTablesSearch: dropdownTablesSearch,
-			dropdownTablesInsert: dropdownTablesInsert,
-			dropdownTablesDelete: dropdownTablesDelete,
 			dropdownAttributesSearch: dropdownAttributesSearch,
-			dropdownAttributesInsert: dropdownAttributesInsert,
-			dropdownAttributesDelete: dropdownAttributesDelete,
 			currentTableSearch: currentTableSearch,
-			currentTableInsert: currentTableInsert,
+			items: []
+		});
+	});
+});
+
+app.get('/deletePage', function(req, res) {
+	db.getTables(req, res, function(err, result) {
+		
+		dropdownTablesDelete = [];
+		for(var i = 0; i < result.rows.length; i++){
+			dropdownTablesDelete.push(result.rows[i].table_name);
+		}
+		res.render('pages/deletepage', {
+			dropdownTablesDelete: dropdownTablesDelete,
+			dropdownAttributesDelete: dropdownAttributesDelete,
 			currentTableDelete: currentTableDelete,
-			items: [],
 			deleteSuccess: -1
+		});
+	});
+});
+
+app.get('/insertPage', function(req, res) {
+	db.getTables(req, res, function(err, result) {
+		
+		dropdownTablesInsert = [];
+		for(var i = 0; i < result.rows.length; i++){
+			dropdownTablesInsert.push(result.rows[i].table_name);
+		}
+		res.render('pages/insertpage', {
+			dropdownTablesInsert: dropdownTablesInsert,
+			dropdownAttributesInsert: dropdownAttributesInsert,
+			currentTableInsert: currentTableInsert
 		});
 	});
 });
@@ -65,7 +85,7 @@ app.get('/getTags', function(req, res) {
 	
 });
 
-app.get('/getQueries', function(req, res) {
+app.get('/queryPage', function(req, res) {
 	res.render('pages/querypage', {
 		items: []
 	});
@@ -84,16 +104,9 @@ app.post('/getAttributesSearch', function(req, res) {
 
 	res.render('pages/index', {
 			dropdownTablesSearch: dropdownTablesSearch,
-			dropdownTablesInsert: dropdownTablesInsert,
-			dropdownTablesDelete: dropdownTablesDelete,
 			dropdownAttributesSearch: dropdownAttributesSearch,
-			dropdownAttributesInsert: dropdownAttributesInsert,
-			dropdownAttributesDelete: dropdownAttributesDelete,
 			currentTableSearch: currentTableSearch,
-			currentTableInsert: currentTableInsert,
-			currentTableDelete: currentTableDelete,
-			items: [],
-			deleteSuccess: -1
+			items: []
 		});
 	});
 });
@@ -109,17 +122,10 @@ app.post('/getAttributesDelete', function(req, res) {
 		dropdownAttributesDelete.push(result.rows[i].column_name);
 	}
 
-	res.render('pages/index', {
-			dropdownTablesSearch: dropdownTablesSearch,
-			dropdownTablesInsert: dropdownTablesInsert,
+	res.render('pages/deletepage', {
 			dropdownTablesDelete: dropdownTablesDelete,
-			dropdownAttributesSearch: dropdownAttributesSearch,
-			dropdownAttributesInsert: dropdownAttributesInsert,
 			dropdownAttributesDelete: dropdownAttributesDelete,
-			currentTableSearch: currentTableSearch,
-			currentTableInsert: currentTableInsert,
 			currentTableDelete: currentTableDelete,
-			items: [],
 			deleteSuccess: -1
 		});
 	});
@@ -130,16 +136,9 @@ app.post('/getSearch', function(req, res) {
 
 		res.render('pages/index', {
 			dropdownTablesSearch: dropdownTablesSearch,
-			dropdownTablesInsert: dropdownTablesInsert,
-			dropdownTablesDelete: dropdownTablesDelete,
 			dropdownAttributesSearch: dropdownAttributesSearch,
-			dropdownAttributesInsert: dropdownAttributesInsert,
-			dropdownAttributesDelete: dropdownAttributesDelete,
 			currentTableSearch: currentTableSearch,
-			currentTableInsert: currentTableInsert,
-			currentTableDelete: currentTableDelete,
-			items: result.rows,
-			deleteSuccess: -1
+			items: result.rows
 		});
 	});
 	
@@ -148,17 +147,10 @@ app.post('/getSearch', function(req, res) {
 app.post('/postDelete', function(req, res) {
 	db.postDelete(req, res, currentTableDelete, function(err, result) {
 
-		res.render('pages/index', {
-			dropdownTablesSearch: dropdownTablesSearch,
-			dropdownTablesInsert: dropdownTablesInsert,
+		res.render('pages/deletepage', {
 			dropdownTablesDelete: dropdownTablesDelete,
-			dropdownAttributesSearch: dropdownAttributesSearch,
-			dropdownAttributesInsert: dropdownAttributesInsert,
 			dropdownAttributesDelete: dropdownAttributesDelete,
-			currentTableSearch: currentTableSearch,
-			currentTableInsert: currentTableInsert,
 			currentTableDelete: currentTableDelete,
-			items: [],
 			deleteSuccess: result.rowCount
 		});
 
