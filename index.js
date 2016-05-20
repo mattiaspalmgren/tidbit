@@ -6,6 +6,7 @@ var db= require("./modules/db.js");
 var dropdownTables = [];
 var dropdownAttributes = [];
 var currentTable = "";
+var currentAttribute = "";
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -26,6 +27,7 @@ app.get('/', function(req, res) {
 	db.getTables(req, res, function(err, result) {
 
 		dropdownTables = [];
+		dropdownAttributes = [];
 		for(var i = 0; i < result.rows.length; i++){
 			dropdownTables.push(result.rows[i].table_name);
 		}
@@ -62,6 +64,8 @@ app.post('/getAttributes', function(req, res) {
 		dropdownAttributes.push(result.rows[i].column_name);
 	}
 
+	currentAttribute = dropdownAttributes; 
+
 	res.render('pages/index', {
 			dropdownTables: dropdownTables,
 			dropdownAttributes: dropdownAttributes,
@@ -77,6 +81,21 @@ app.post('/getSearch', function(req, res) {
 		res.render('pages/index', {
 			dropdownTables: dropdownTables,
 			dropdownAttributes: dropdownAttributes,
+			currentTable: currentTable,
+			items: result.rows
+		});
+	});
+	
+});
+
+app.post('/insertTuple', function(req, res) {
+
+	console.log(req.body, currentTable);
+
+	db.insert(req, res, currentTable, currentAttribute, function(err, result) {
+		res.render('pages/index', {
+			dropdownTables: [],
+			dropdownAttributes: [],
 			currentTable: currentTable,
 			items: result.rows
 		});

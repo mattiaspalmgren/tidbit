@@ -30,7 +30,31 @@ module.exports = {
 
     //console.log(queryString);
     queryDB(req, res, callback, queryString);
-  }
+  },
+
+  insert: function(req, res, currentTable, currentAttribute, callback) {    
+    var queryString = "INSERT INTO " + currentTable + "  (";
+
+    for (var i = 1; i < currentAttribute.length; i++) {
+      queryString = queryString + currentAttribute[i]
+      if(i != currentAttribute.length - 1) {
+        queryString = queryString + ", ";
+      }
+    }
+
+    queryString = queryString + ") VALUES ('";
+
+    for (var i = 0; i < req.body.input.length; i++) {
+      queryString = queryString + req.body.input[i].toString();
+      if(i != req.body.input.length - 1) {
+        queryString = queryString + "', '";
+      }
+    }
+    queryString = queryString + "');";
+    console.log(queryString);
+    queryDB(req, res, callback, queryString);
+  },
+
 
 };
 
