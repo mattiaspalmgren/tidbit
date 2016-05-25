@@ -8,14 +8,16 @@
 <body>
 
   <div class="container">
-
+    
     <div class="page-header">
-	    <h1>tidbit <small>an application for searching a book database <span class="glyphicon glyphicon-education" aria-hidden="true"></span></small>
-	    <div class="btn-group pull-right" role="group">
-	    	<button type="button" class="btn btn-default active" onclick="location.href='/';" >
+      <h1>
+      	tidbit <small>an application for searching a book database <span class="glyphicon glyphicon-education" aria-hidden="true"></span></small>
+
+	   	<div class="btn-group pull-right" role="group">
+		   	<button type="button" class="btn btn-default" onclick="location.href='/';" >
 		      	Search
 		    </button>
-	        <button type="button" class="btn btn-default" onclick="location.href='/queryPage';" >
+	        <button type="button" class="btn btn-default active" onclick="location.href='/queryPage';" >
 		      	Queries
 		    </button>
 		    <button type="button" class="btn btn-default" onclick="location.href='/insertPage';" >
@@ -26,15 +28,12 @@
 		    </button>
 		</div>
 
+      </h1>
 
-	    </h1>
-
-      	
     </div>
 
-
-		<% include ../partials/search.ejs %>
-
+    <div>
+		<% include ../partials/queries.ejs %>
 
 
 		<% if(items.length > 0) { %>

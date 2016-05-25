@@ -1,15 +1,15 @@
 
 <div class="jumbotron">
 	<p>Wrote a book? A review? Maybe got an award? Add yourself here.</p>
-	<% if(dropdownAttributes.length == 0) { %>
-		<form action="http://localhost:5000/getAttributes" method="post" class="form-inline">
+	<% if(dropdownAttributesInsert.length == 0 && InsertSuccess == -1) { %>
+		<form action="http://localhost:5000/getAttributesInsert" method="post" class="form-inline">
 			<div class="form-group">
 
 				<select id="tables" name="tables" class="form-control">
 					<option value="" disabled selected>Select an entity</option>
 
-					<% for(var i = 0; i < dropdownTables.length; i++) { %>
-					<option value=<%- dropdownTables[i] %>><%- dropdownTables[i] %></option>
+					<% for(var i = 0; i < dropdownTablesInsert.length; i++) { %>
+					<option value=<%- dropdownTablesInsert[i] %>><%- dropdownTablesInsert[i] %></option>
 					<% }; %>
 
 				</select>
@@ -18,13 +18,19 @@
 		</form>
 	<% } %>
 
-	<% if(dropdownAttributes.length > 0) { %>
-		<form action="http://localhost:5000/insertTuple" method="post"class="form-horizontal" role="form">
+	<% if(dropdownAttributesInsert.length > 0 && InsertSuccess == -1 )  { %>
+		<form action="http://localhost:5000/insert" method="post"class="form-horizontal" role="form">
 
-		    <div class="form-group" name="hej">
-		    <% for(var i = 1; i < dropdownAttributes.length; i++) { %>
+		    <div class="form-group">
 		    	<div class="form-group">
-		    	      <label class="control-label col-sm-2"><%- dropdownAttributes[i] %></label>
+			    	<label class="control-label col-sm-2"><%- dropdownAttributesInsert[0] %></label>
+			    	<div class="col-sm-10">
+			    	  <input type="text" id="disabledInput" class="form-control"  placeholder=<%- maxId %> name="input" disabled>
+			    	</div>
+		    	</div>
+		    <% for(var i = 1; i < dropdownAttributesInsert.length; i++) { %>
+		    	<div class="form-group">
+		    	      <label class="control-label col-sm-2"><%- dropdownAttributesInsert[i] %></label>
 		    	      <div class="col-sm-10">
 		    	        <input type="text" class="form-control"  placeholder="..." name="input">
 		    	      </div>
@@ -37,5 +43,19 @@
 		        </div>
 		    </div>
 	  	</form>
+
 	<% } %>
+
+	<% if(InsertSuccess != -1) { 
+		 if(InsertSuccess > 0) { %>
+		 <div class="alert alert-success">
+		  <strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Success!</strong> You inserted an entry in the database. 
+		</div>
+		<% } 
+		 else { %>
+		 <div class="alert alert-danger">
+		  <strong><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Error!</strong> You were not able to insert, try again, it was maybe a typo. 
+		</div>
+		<% } %>
+		<%} %>
 </div>
