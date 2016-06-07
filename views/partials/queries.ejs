@@ -1,7 +1,27 @@
 <div class="jumbotron">
  	<div class="container">
- 		<p>Queries</p>
- 		<input type="button" class="btn btn-default" onclick="location.href='/getTags';" value="Tags" />
+ 		<p>Some interesting queries.</p>
+
+ 		<% buttons.forEach(function(button, index) { %>
+ 		
+ 			<button type="button" class="btn btn-default query-button" onclick="location.href='/getQueries?id=<%= index%>';"  >
+ 				<%- button.title%>
+ 			</button>
+
+	       	<div class="alert alert-info query-info" role="alert">
+	       			<strong><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></strong> 
+					<%- button.description%>
+	       	</div>
+
+       	<% }); %> 
+
+
 
 	</div>
 </div>
+<% if(description.length > 0) { %>
+
+	<p>
+		<strong><%- description%></strong>
+	</p>
+<%};%> 

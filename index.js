@@ -1,9 +1,11 @@
 var express = require('express');
+var fs = require('fs');
 var pg = require('pg');
 var app = express();
 var bodyParser = require('body-parser');
-var db= require("./modules/db.js");
+var db = require("./modules/db.js");
 
+var query_data = JSON.parse(fs.readFileSync('query_data.json', 'utf8'));
 var dropdownTablesSearch = [];
 var dropdownTablesDelete = [];
 var dropdownTablesInsert = [];
@@ -85,19 +87,28 @@ app.get('/insertPage', function(req, res) {
 	});
 });
 
-app.get('/getTags', function(req, res) {
-	db.getTags(req, res, function(err, result) {
+app.get('/getQueries', function(req, res) {
+
+	var queryString = query_data[req.query['id']].query
+	
+	db.getTags(req, res, queryString, function(err, result) {
 
 		res.render('pages/querypage', {
-			items: result.rows
+			items: result.rows,
+			buttons: query_data,
+			description: query_data[req.query['id']].description
+
 		});
 	});
 	
 });
 
 app.get('/queryPage', function(req, res) {
+
 	res.render('pages/querypage', {
-		items: []
+		items: [],
+		buttons: query_data,
+		description: ""
 	});
 	
 });
@@ -223,5 +234,6 @@ app.post('/postDelete', function(req, res) {
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
+
 
 

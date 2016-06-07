@@ -1,9 +1,7 @@
 module.exports = {
 
-  getTags: function(req, res, callback) {    
-    var queryString = 'SELECT tag_id FROM tags LIMIT 10;';
+  getTags: function(req, res, queryString, callback) {    
     queryDB(req, res, callback, queryString);
-
   },
 
   getAttributes: function(req, res, callback) {    
@@ -70,8 +68,8 @@ module.exports = {
 var queryDB = function(req, res, callback, queryString) {    
       var pg = require('pg');  
     
-      var conString = "postgres://mattiaspalmgren:@localhost/mattiaspalmgren";
-      // var conString = "postgres://petraohlin8:@localhost/tidbit";
+      //var conString = "postgres://mattiaspalmgren:@localhost/mattiaspalmgren";
+      var conString = "postgres://petraohlin8:@localhost/tidbit";
       
       var client = new pg.Client(conString);
       client.connect(function(err) {

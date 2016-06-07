@@ -1,0 +1,9 @@
+.query-info {
+    display: none;
+    position: absolute;
+    margin-top: 10px;
+}
+    
+.query-button:hover + .query-info {
+    display: block;
+}
