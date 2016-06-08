@@ -1,0 +1,113 @@
+
+[
+	{    	
+		"title": "2a",
+		"description": "For every year, output the year and the number of publications for said year.",
+    	"query": "SELECT extract(year from publication_date), count(*) FROM Publications GROUP BY extract(year from publication_date) ORDER BY extract(year from publication_date);" 
+	},
+	{    	
+		"title": "2b",
+		"description": "Output the names of the ten authors with most publications.",
+    	"query": "SELECT author_name FROM authors WHERE author_name != 'uncredited' AND Author_ID in ( SELECT CA.author_ID FROM credited_authors CA GROUP BY author_ID ORDER BY COUNT(*) DESC LIMIT 10);" 
+	},
+	{    	
+		"title": "2c",
+		"description": "What are the names of the youngest and oldest authors to publish something in 2010?",
+    	"query": "(SELECT a.author_name FROM authors A WHERE A.author_id in ( SELECT CA.author_id FROM credited_authors CA, Publications P WHERE P.Publication_ID = CA.Publication_ID AND EXTRACT(YEAR FROM Publication_Date) = 2010  ) ORDER BY A.Author_Birthdate DESC LIMIT 1) UNION (SELECT a.author_name FROM authors A WHERE A.author_id in ( SELECT CA.author_id FROM credited_authors CA, Publications P WHERE P.Publication_ID = CA.Publication_ID AND EXTRACT(YEAR FROM Publication_Date) = 2010  ) ORDER BY A.Author_Birthdate ASC LIMIT 1);" 
+	},
+	{    	
+		"title": "2d",
+		"description": "How many comics (graphic titles) have publications with less than 50 pages",
+    	"query": "SELECT COUNT(*) FROM titles T WHERE T.Title_graphic = 'Yes' AND T.title_id in ( SELECT IP.title_id FROM is_published IP, Publications P WHERE IP.Publication_ID = P.Publication_ID AND (substring(P.Publication_Pages, '[0-9]+')::bigint) < 50);" 
+	},
+	{    	
+		"title": "2e",
+		"description": "For every publisher, calculate the average price of its published novels (the ones that have a dollar price).",
+    	"query": "SELECT avg(price) FROM Publications  WHERE currency LIKE '$' GROUP BY publisher_id;" 
+	},
+	{    	
+		"title": "2f",
+		"description": "What is the name of the author with the highest number of titles that are tagged as “science fiction”?",
+    	"query": "SELECT author_name FROM authors WHERE author_id in ( SELECT CA.author_id FROM Credited_Authors CA, Is_Published IP WHERE CA.Publication_ID = IP.Publication_ID AND IP.Title_ID in ( SELECT Ti.Title_ID FROM  Titles_tags Ti, Tags Ta WHERE Ti.Tag_ID = Ta.Tag_ID and Ta.Tag_name LIKE '%science fiction%' ) GROUP BY author_id ORDER BY COUNT(*) Desc ) LIMIT 1;" 
+	},
+	{    	
+		"title": "2g",
+		"description": "List the three most popular titles (i.e., the ones with the most awards and reviews).",
+    	"query": "SELECT title FROM titles t WHERE t.title_id IN ( SELECT tt.title_id FROM  ((SELECT a.title_id, COUNT(a.title_id) AS ARcounts FROM title_awards a GROUP BY a.title_id ORDER BY COUNT(*) Desc LIMIT 30)  UNION (SELECT r.title_id, COUNT(r.title_id) AS ARcounts FROM reviews r GROUP BY r.title_id ORDER BY COUNT(*) Desc LIMIT 30)) AS tt GROUP BY tt.title_id ORDER BY sum(tt.ARcounts) desc LIMIT 3 );" 
+	},
+	{    	
+		"title": "3a",
+		"description": "Compute the average price per currency of the publications of the most popular title (i.e, the title with most publications overall).",
+    	"query": "SELECT avg(p.price), p.currency FROM publications p WHERE p.publication_id in ( SELECT  ip.title_id FROM is_published ip GROUP BY ip.title_id ) GROUP BY p.currency HAVING p.currency NOTNULL;" 
+	},
+	{    	
+		"title": "3b",
+		"description": "Output the names of the top ten title series with most awards.",
+    	"query": "SELECT ts.id, ts.title, count(*) FROM titles_series ts, titles t, title_awards a WHERE t.title_ID = a.title_ID AND t.series_ID NOTNULL AND t.series_ID = ts.ID GROUP BY ts.ID ORDER BY count(*) desc LIMIT 10;" 
+	},
+	{    	
+		"title": "3c",
+		"description": "Output the name of the author who has received the most awards after his/her death.",
+    	"query": "SELECT a.author_name FROM title_awards ta, is_published ip, credited_authors ca, authors a, awards aw WHERE ta.award_id = aw.award_id AND ta.title_id = ip.title_id AND ip.publication_id = ca.publication_id AND a.author_id = ca.author_id AND a.author_deathdate < aw.award_date GROUP BY  a.author_id ORDER BY COUNT(*) desc LIMIT 1;" 
+	},
+	{    	
+		"title": "3d",
+		"description": "For a given year, output the three publishers that published the most publications.",
+    	"query": "SELECT p1.publisher_name FROM publisher p1 WHERE p1.publisher_id IN ( SELECT p2.publisher_ID FROM publications p2 WHERE extract(year from p2.publication_date) = 1992 GROUP BY p2.publisher_ID ORDER BY COUNT(*) Desc LIMIT 3 );" 
+	},
+	{    	
+		"title": "3e",
+		"description": "Given an author, compute his/her most reviewed title(s).",
+    	"query": "SELECT  r.title_ID, t.title, count(*) FROM titles t,  credited_authors ca, is_published ip, reviews r WHERE ca.author_ID = 123 AND ca.publication_ID = ip.publication_ID AND ip.title_ID =  t.title_ID AND  t.title_ID = r.title_ID  GROUP BY r.title_ID, t.title ORDER BY count(*) desc;" 
+	},
+	{    	
+		"title": "3f",
+		"description": "For every language, find the top three title types with most translations.",
+    	"query": "SELECT l.language_name, rs.type, rs.translations FROM ( SELECT t.language_id, type, count(*)  AS translations, ROW_NUMBER() OVER (PARTITION BY t.language_id ORDER BY count(*) desc) AS rank FROM titles t   WHERE t.language_id != 0 AND t.parent != 0 GROUP BY t.language_id, t.type ) rs, Languages l WHERE rs.rank < 4 AND l.language_id = rs.language_id;" 
+	},
+	{    	
+		"title": "3g",
+		"description": "For each year, compute the average number of authors per publisher.",
+    	"query": "SELECT rs2.pubyear, ROUND(avg(rs2.nr)) as avg FROM ( SELECT rs.pubyear, p2.publisher_id,count(*) as nr FROM ( SELECT p.publisher_id, ca.author_id,  EXTRACT(year from p.publication_date) as pubyear FROM credited_authors ca, publications p WHERE ca.publication_id = p.publication_id AND p.publisher_id != 0 AND EXTRACT(year from p.publication_date) < 2017 GROUP BY p.publisher_id, ca.author_id,p.publication_date  ) rs, publisher p2 WHERE p2.publisher_id = rs.publisher_id  GROUP BY p2.publisher_id, rs.pubyear ) rs2 GROUP BY rs2.pubyear ORDER BY rs2.pubyear desc;" 
+	},
+	{    	
+		"title": "3h",
+		"description": "Find the publication series with most titles that have been given awards of “World Fantasy Award” type.",
+    	"query": "SELECT ps.publication_series_id, ps.Publication_Series_Name FROM  publications p, is_published ip, title_awards ta,  Award_types at, awards a, publication_series ps WHERE ps.publication_series_id = p.publication_series_ID AND p.Publication_ID = ip.Publication_ID AND p.publication_series_id != 0 AND ip.Title_ID = ta.Title_ID AND ta.award_ID = a.award_id AND a.award_type_id = at.award_type_id AND at.Award_Type_Name = 'World Fantasy Award' GROUP BY ps.Publication_Series_ID, ps.Publication_Series_Name ORDER BY COUNT(*) desc LIMIT 1;" 
+	},
+	{    	
+		"title": "3i",
+		"description": "For every award category, list the names of the three most awarded authors.",
+    	"query": "SELECT ac2.award_category_name, rs.author_name, rs.nr FROM ( SELECT a.author_name, ac.award_category_id, count(*) as nr, ROW_NUMBER() OVER (PARTITION BY  ac.award_category_id ORDER BY count(*) desc) AS rank FROM award_categories ac, awards aw, title_awards ta, is_published ip, credited_authors ca, authors a WHERE ta.title_id = ip.title_id AND ip.publication_id = ca.publication_id AND a.author_id = ca.author_id AND aw.award_id = ta.award_id AND aw.award_category_id = ac.award_category_id GROUP BY ac.award_category_id, a.author_id ) rs,  award_categories ac2 WHERE rs.award_category_id = ac2.award_category_id AND rs.rank < 4;" 
+	},
+	{    	
+		"title": "3j",
+		"description": "Output the names of all living authors that have published at least one anthology from youngest to oldest.",
+    	"query": "SELECT DISTINCT a.Author_Name,  a.Author_Birthdate FROM authors a, credited_authors ca, publications p WHERE a.Author_Deathdate IS NULL AND a.Author_Birthdate IS NOT NULL AND  a.author_id = ca.author_id AND ca.publication_id = p.publication_id AND p.publication_type = 'ANTHOLOGY' ORDER BY a.Author_Birthdate DESC;" 
+	},
+	{    	
+		"title": "3k",
+		"description": "Compute the average number of publications per publication series (single result/number expected).",
+    	"query": "SELECT AVG(t.number) FROM ( SELECT COUNT(*) as number FROM publications  WHERE Publication_Series_ID IS NOT NULL GROUP BY Publication_Series_ID );" 
+	},
+	{    	
+		"title": "3l",
+		"description": "Find the author who has reviewed the most titles.",
+    	"query": "SELECT a.Author_Name, a.author_id FROM authors a, credited_authors ca, is_published ip, titles t WHERE a.author_id = ca.author_id AND ca.publication_id = ip.publication_id AND ip.title_id = t.title_id AND t.Type = 'REVIEW' GROUP BY a.author_id ORDER BY Count(*) DESC;" 
+	},
+	{    	
+		"title": "3m",
+		"description": "For every language, list the three authors with the most translated titles of “novel” type.",
+    	"query": "SELECT l.language_name, rs.author_id, rs.translations FROM ( SELECT ca.author_id, t.language_id, count(*) as translations, ROW_NUMBER() OVER (PARTITION BY t.language_id ORDER BY count(*) desc) AS rank FROM titles t, is_published ip, credited_authors ca WHERE t.type ='NOVEL'  AND t.parent != 0 AND t.language_id != 0 AND t.title_id = ip.title_id AND ip.publication_id= ca.publication_id GROUP BY ca.author_id, t.language_id ) rs, Languages l WHERE rs.rank < 4 AND l.language_id = rs.language_id;" 
+	},
+	{    	
+		"title": "3n",
+		"description": "Order the top ten authors whose publications have the largest pages per dollar ratio (considering all publications of an author that have a dollar price).",
+    	"query": "SELECT a.Author_name, SUM((substring(P.Publication_Pages, '[0-9]+')::bigint)) / CASE sum(p.price)  WHEN 0 THEN 1  ELSE sum(p.price) END FROM Authors a, publications p, credited_authors ca WHERE a.author_id = ca.author_id AND ca.publication_id = p.publication_id AND p.currency LIKE '$' AND P.Publication_Pages NOTNULL  AND p.price NOTNULL GROUP BY a.author_id ORDER BY SUM((substring(P.Publication_Pages, '[0-9]+')::bigint)) / CASE sum(p.price)  WHEN 0 THEN 1  ELSE sum(p.price) END desc;" 
+	},
+	{    	
+		"title": "3o",
+		"description": "For publications that have been awarded the Nebula award, find the top 10 with the most extensive web presence.",
+    	"query": "SELECT count(*) FROM ( SELECT ca.author_id, p.publisher_id, p.publication_series_id, ta.title_id, t.series_id FROM award_types at, awards aw, title_awards ta, is_published ip, publications p, credited_authors ca, titles t                                                         WHERE at.award_type_name LIKE 'Nebula%' AND at.award_type_id = aw.award_type_id AND aw.award_id = ta.award_id AND ta.title_id = ip.title_id AND ip.publication_id = p.publication_id AND p.publication_id = ca.publication_id AND ta.title_id = t.title_id ) rs, webpages w WHERE w.author_id = rs.author_id OR w.publisher_id = rs.publisher_id OR w.publication_series_id = rs.publication_series_id OR w.title_id = rs.title_id OR w.title_series_id = rs.series_id  ORDER BY count(*) desc LIMIT 10;" 
+	}
+]
